@@ -1,13 +1,26 @@
 from django.shortcuts import render
+from django.views.generic import TemplateView
 
 
-def about(request):
-    view_name = request.resolver_match.view_name
-    context = {'current_view': view_name}
-    return render(request, 'pages/about.html', context)
+class AboutTemplateView(TemplateView):
+    template_name = "pages/about.html"
 
 
-def rules(request):
-    view_name = request.resolver_match.view_name
-    context = {'current_view': view_name}
-    return render(request, 'pages/rules.html', context)
+class RulesTemplateView(TemplateView):
+    template_name = "pages/rules.html"
+
+
+def permission_denied(request, exception):
+    return render(request, "pages/403.html", status=403)
+
+
+def csrf_failure(request, reason=""):
+    return render(request, "pages/403csrf.html", status=403)
+
+
+def page_not_found(request, exception):
+    return render(request, "pages/404.html", status=404)
+
+
+def server_error(request):
+    return render(request, "pages/500.html", status=500)
