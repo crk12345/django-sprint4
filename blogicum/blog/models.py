@@ -25,11 +25,6 @@ class PostManager(models.Manager):
         )
 
 
-# Почему-то начал игнорировать (не сортирует)
-# ordering в метаклассе класса Post.
-# Пришлось тут добавить order_by.
-
-
 class BaseModel(models.Model):
     is_published = models.BooleanField(
         verbose_name="Опубликовано",
