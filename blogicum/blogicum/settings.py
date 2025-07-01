@@ -37,7 +37,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'blogicum.urls'
 
 
-TEMPLATES_DIR = os.path.join(BASE_DIR, 'html')
+TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 
 
 STATIC_URL = '/static/'
