@@ -14,17 +14,17 @@ ALLOWED_HOSTS = []
 
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'blog.apps.BlogConfig',
-    'pages.apps.PagesConfig',
-    'django_bootstrap5',
-    'users.apps.UsersConfig',
-    'debug_toolbar',
+    "pages.apps.PagesConfig",
+    "blog.apps.BlogConfig",
+    "users.apps.UsersConfig",
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "debug_toolbar",
+    "django_bootstrap5",
 ]
 
 MIDDLEWARE = [
@@ -114,9 +114,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-AUTH_USER_MODEL = "users.User"
-
-
 # Static files (CSS, JavaScript, Images)
 
 
@@ -127,7 +124,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CSRF_FAILURE_VIEW = "pages.views.csrf_failure"
 
-AUTH_USER_MODEL = "users.User"
+AUTH_USER_MODEL = "users.user"
 
 LOGIN_REDIRECT_URL = "blog:index"
 
