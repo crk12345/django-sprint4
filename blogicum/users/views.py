@@ -20,7 +20,7 @@ class UserCreateView(CreateView):
         return redirect("blog:index")
 
 
-class UserProfileUpdateView(LoginRequiredMixin, UpdateView):
+class edit_profile(LoginRequiredMixin, UpdateView):   
     model = User
     form_class = EditUserProfileForm
     template_name = "blog/user.html"
