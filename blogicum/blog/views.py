@@ -32,8 +32,6 @@ class CommentEditMixin:
     pk_url_kwarg = "comment_pk"
     template_name = "blog/comment.html"
 
-
-
 class PostDeleteView(PostsEditMixin, LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy("blog:index")
 

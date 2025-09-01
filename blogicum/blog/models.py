@@ -24,7 +24,6 @@ class PostManager(models.Manager):
             .order_by("-pub_date")
         )
 
-
 class BaseModel(models.Model):
     is_published = models.BooleanField(
         verbose_name="Опубликовано",
