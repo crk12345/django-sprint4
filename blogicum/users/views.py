@@ -4,7 +4,7 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView
 
-from .forms import CustomUserCreationForm, EditUserProfileForm
+from .forms import CustomUserCreationForm,  EditUserProfileForm
 
 User = get_user_model()
 
@@ -22,7 +22,7 @@ class UserCreateView(CreateView):
 
 class edit_profile(LoginRequiredMixin, UpdateView):   
     model = User
-    form_class = EditUserProfileForm
+    form_class =  EditUserProfileForm
     template_name = "blog/user.html"
 
     def get_object(self):
