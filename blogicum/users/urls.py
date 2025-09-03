@@ -35,7 +35,7 @@ urlpatterns = [
     path("auth/", include("django.contrib.auth.urls")),
     path(
         "profile/edit/",
-        views.edit_profile.as_view(),
+        views.UserProfileUpdateView.as_view(),
         name="edit_profile",
     ),
 ]
