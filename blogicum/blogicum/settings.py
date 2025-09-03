@@ -24,7 +24,7 @@ STATICFILES_DIRS = [
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = (
-    "django-insecure-gt8o@v)#7&clty_-7uupnh6qazh6gmnqxhn5tg=^09ivhb(#_^"
+    'django-insecure-&t5+_$nn1z(v!-r3k-l-8azmm6=u-4bw-o3*+5h5-0ntnfhh!m'
 )
 
 # SECURITY WARNING: don't run with debug turned on in production!
