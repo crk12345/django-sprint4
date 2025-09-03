@@ -21,7 +21,7 @@ class UserCreateView(CreateView):
 
 
 class UserProfileUpdateView(LoginRequiredMixin, UpdateView):
-        model = User
+    model = User
     form_class = EditUserProfileForm
     template_name = "blog/user.html"
 
