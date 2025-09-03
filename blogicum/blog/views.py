@@ -16,6 +16,7 @@ from .models import Category, Comment, Post, User
 
 PAGINATED_BY = 10
 
+
 class PostsQuerySetMixin:
     def get_queryset(self):
         return Post.post_list
@@ -31,6 +32,7 @@ class CommentEditMixin:
     model = Comment
     pk_url_kwarg = "comment_pk"
     template_name = "blog/comment.html"
+
 
 class PostDeleteView(PostsEditMixin, LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy("blog:index")
