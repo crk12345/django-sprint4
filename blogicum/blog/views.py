@@ -107,7 +107,6 @@ class CommentUpdateView(CommentEditMixin, LoginRequiredMixin, UpdateView):
             != Comment.objects.get(pk=self.kwargs["comment_pk"]).author
         ):
             return redirect("blog:post_detail", pk=self.kwargs["pk"])
-
         return super().dispatch(request, *args, **kwargs)
 
     def get_success_url(self):
