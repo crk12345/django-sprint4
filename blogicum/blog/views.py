@@ -40,8 +40,8 @@ class PostDeleteView(PostsEditMixin, LoginRequiredMixin, DeleteView):
 
     def delete(self, request, *args, **kwargs):
         post = get_object_or_404(
-            Post, pk=self.kwargs["pk"], author=request.user)
-        if self.request.user != post.author and not self.request.user.is_staff:
+            Post, pk=self.kwargs["pk"])
+        if (self.request.user != post.author) and not self.request.user.is_staff:
             return redirect("blog:index")
         return super().delete(request, *args, **kwargs)
 
@@ -51,7 +51,7 @@ class PostUpdateView(PostsEditMixin, LoginRequiredMixin, UpdateView):
 
     def dispatch(self, request, *args, **kwargs):
         post = get_object_or_404(Post, pk=self.kwargs["pk"])
-        if self.request.user != post.author:
+        if self.request.user != post.author and not self.request.user.is_staff:
             return redirect("blog:post_detail", pk=self.kwargs["pk"])
         return super().dispatch(request, *args, **kwargs)
 
