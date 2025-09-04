@@ -176,7 +176,7 @@ class BlogCategoryListView(PostsQuerySetMixin, ListView):
         )
 
 
-class PostDetailView( PostsQuerySetMixin, DetailView):
+class PostDetailView(PostsQuerySetMixin, DetailView):
     model = Post
     template_name = "blog/detail.html"
 
@@ -202,4 +202,3 @@ class PostDetailView( PostsQuerySetMixin, DetailView):
                 "comments",
             )
         )
-    
