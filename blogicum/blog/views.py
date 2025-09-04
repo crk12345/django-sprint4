@@ -37,7 +37,7 @@ class CommentEditMixin:
 
 class PostDeleteView(PostsEditMixin, LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy("blog:index")
-   
+
     def delete(self, request, *args, **kwargs):
         post = get_object_or_404(
             Post, pk=self.kwargs["pk"])
@@ -93,7 +93,7 @@ class CommentDeleteView(CommentEditMixin, LoginRequiredMixin, DeleteView):
 
     def delete(self, request, *args, **kwargs):
         comment = get_object_or_404(
-            Comment, pk=self.kwargs["comment_pk"], author=request.user)
+            Comment, pk=self.kwargs["comment_pk"])
         if (self.request.user == comment.author) or (
                 self.request.user.is_staff):
             return super().delete(request, *args, **kwargs)
@@ -105,13 +105,14 @@ class CommentUpdateView(CommentEditMixin, LoginRequiredMixin, UpdateView):
     form_class = CreateCommentForm
 
     def dispatch(self, request, *args, **kwargs):
-        get_object_or_404(Comment, pk=self.kwargs["pk"])
+        #        get_object_or_404(Comment, pk=self.kwargs["pk"])
         if (
             self.request.user
-            != Comment.objects.get(pk=self.kwargs["comment_pk"]).author
+            == Comment.objects.get(pk=self.kwargs["comment_pk"]).author
         ):
+            return super().dispatch(request, *args, **kwargs)
+        else:
             return redirect("blog:post_detail", pk=self.kwargs["pk"])
-        return super().dispatch(request, *args, **kwargs)
 
     def get_success_url(self):
         return reverse("blog:post_detail", kwargs={"pk": self.kwargs["pk"]})
