@@ -37,7 +37,7 @@ class CommentEditMixin:
 
 class PostDeleteView(PostsEditMixin, LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy("blog:index")
-
+   
     def delete(self, request, *args, **kwargs):
         post = get_object_or_404(
             Post, pk=self.kwargs["pk"])
