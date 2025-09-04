@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
 from django.db.models import Count
@@ -100,15 +101,8 @@ class CommentUpdateView(CommentEditMixin, LoginRequiredMixin, UpdateView):
     form_class = CreateCommentForm
 
     def dispatch(self, request, *args, **kwargs):
-       
-#        if (
-#            self.request.user
-#            != Comment.objects.get(pk=self.kwargs["comment_pk"]).author
-#        ):
-
-        comment = get_object_or_404(
-            Comment, pk=self.kwargs["comment_pk"], author=request.user)
-        if self.request.user != comment.author:
+        comment = get_object_or_404(Comment, pk=self.kwargs["pk"])
+        if self.request.user != post.author:
             return redirect("blog:post_detail", pk=self.kwargs["pk"])
         return super().dispatch(request, *args, **kwargs)
 
@@ -182,9 +176,15 @@ class BlogCategoryListView(PostsQuerySetMixin, ListView):
         )
 
 
-class PostDetailView(PostsQuerySetMixin, DetailView):
+class PostDetailView( PostsQuerySetMixin, DetailView):
     model = Post
     template_name = "blog/detail.html"
+
+    def get_object(self, queryset=None):
+        obj = get_object_or_404(Post, pk=self.kwargs['pk'])
+        if not obj.is_published and obj.author != self.request.user:
+            raise Http404("Post not found")
+        return obj
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -202,3 +202,4 @@ class PostDetailView(PostsQuerySetMixin, DetailView):
                 "comments",
             )
         )
+    
