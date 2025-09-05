@@ -42,7 +42,7 @@ class PostDeleteView(PostsEditMixin, LoginRequiredMixin, DeleteView):
         post = get_object_or_404(
             Post, pk=self.kwargs["pk"])
         if (self.request.user == post.author) or (
-                self.request.user.is_staff):
+                self.request.user.is_superuser):
             return super().delete(request, *args, **kwargs)
         else:
             return redirect("blog:index")
@@ -53,7 +53,8 @@ class PostUpdateView(PostsEditMixin, LoginRequiredMixin, UpdateView):
 
     def dispatch(self, request, *args, **kwargs):
         post = get_object_or_404(Post, pk=self.kwargs["pk"])
-        if self.request.user != post.author and not self.request.user.is_staff:
+        if self.request.user != post.author and not (
+                self.request.user.is_superuser):
             return redirect("blog:post_detail", pk=self.kwargs["pk"])
         return super().dispatch(request, *args, **kwargs)
 
@@ -95,7 +96,7 @@ class CommentDeleteView(CommentEditMixin, LoginRequiredMixin, DeleteView):
         comment = get_object_or_404(
             Comment, pk=self.kwargs["comment_pk"])
         if (self.request.user == comment.author) or (
-                self.request.user.is_staff):
+                self.request.user.is_superuser):
             return super().delete(request, *args, **kwargs)
         else:
             return redirect("blog:post_detail", pk=self.kwargs["pk"])
@@ -107,7 +108,7 @@ class CommentUpdateView(CommentEditMixin, LoginRequiredMixin, UpdateView):
     def dispatch(self, request, *args, **kwargs):
         comment = get_object_or_404(Comment, pk=self.kwargs["comment_pk"])
         if (self.request.user == comment.author) or (
-                self.request.user.is_staff):
+                self.request.user.is_superuser):
             return super().dispatch(request, *args, **kwargs)
         else:
             return redirect("blog:post_detail", pk=self.kwargs["pk"])
