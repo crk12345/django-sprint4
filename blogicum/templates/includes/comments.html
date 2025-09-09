@@ -20,7 +20,7 @@
       <br>
       {{ comment.text|linebreaksbr }}
     </div>
-    {% if user == comment.author %}
+    {% if user == comment.author or user.is_superuser %}
       <a class="btn btn-sm text-muted" href="{% url 'blog:edit_comment' post.id comment.id %}" role="button">
         Отредактировать комментарий
       </a>
