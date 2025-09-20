@@ -45,7 +45,10 @@ class PostDeleteView(PostsEditMixin, LoginRequiredMixin, DeleteView):
                 self.request.user.is_superuser):
             return super().delete(request, *args, **kwargs)
         else:
-            return redirect("blog:index")
+            # Return 404 instead of redirecting
+            from django.http import Http404
+            raise Http404(
+                "Post not found or you don't have permission to delete it")
 
 
 class PostUpdateView(PostsEditMixin, LoginRequiredMixin, UpdateView):
