@@ -41,8 +41,8 @@ class PostDeleteView(PostsEditMixin, LoginRequiredMixin, DeleteView):
     def dispatch(self, request, *args, **kwargs):
         post = get_object_or_404(Post, pk=self.kwargs["pk"])
         if (
-            self.request.user != post.author and 
-            not self.request.user.is_superuser
+            self.request.user != post.author 
+            and not self.request.user.is_superuser
         ):
             return redirect("blog:post_detail", pk=self.kwargs["pk"])
         return super().dispatch(request, *args, **kwargs)
