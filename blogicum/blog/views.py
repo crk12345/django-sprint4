@@ -38,17 +38,11 @@ class CommentEditMixin:
 class PostDeleteView(PostsEditMixin, LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy("blog:index")
 
-    def delete(self, request, *args, **kwargs):
-        post = get_object_or_404(
-            Post, pk=self.kwargs["pk"])
-        if (self.request.user == post.author) or (
-                self.request.user.is_superuser):
-            return super().delete(request, *args, **kwargs)
-        else:
-            # Return 404 instead of redirecting
-            from django.http import Http404
-            raise Http404(
-                "Post not found or you don't have permission to delete it")
+    def dispatch(self, request, *args, **kwargs):
+        post = get_object_or_404(Post, pk=self.kwargs["pk"])
+        if self.request.user != post.author and not self.request.user.is_superuser:
+            return redirect("blog:post_detail", pk=self.kwargs["pk"])
+        return super().dispatch(request, *args, **kwargs)
 
 
 class PostUpdateView(PostsEditMixin, LoginRequiredMixin, UpdateView):
