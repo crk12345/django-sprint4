@@ -91,7 +91,10 @@ class CommentDeleteView(CommentEditMixin, LoginRequiredMixin, DeleteView):
 
     def dispatch(self, request, *args, **kwargs):
         comment = get_object_or_404(Comment, pk=self.kwargs["comment_pk"])
-        if self.request.user != comment.author and not self.request.user.is_superuser:
+        if (
+           self.request.user != comment.author 
+           and not self.request.user.is_superuser
+        ):
             return redirect("blog:post_detail", pk=self.kwargs["pk"])
         return super().dispatch(request, *args, **kwargs)
 
