@@ -25,7 +25,7 @@ class PostManager(models.Manager):
         )
 
 
-class BaseModel(models.Model):
+class BaseModelPubCreat(models.Model):
     is_published = models.BooleanField(
         verbose_name="Опубликовано",
         default=True,
@@ -39,7 +39,7 @@ class BaseModel(models.Model):
         abstract = True
 
 
-class Category(BaseModel):
+class Category(BaseModelPubCreat):
     title = models.CharField(max_length=256, verbose_name="Заголовок")
     description = models.TextField(verbose_name="Описание")
     slug = models.SlugField(
@@ -64,7 +64,7 @@ class Category(BaseModel):
         )
 
 
-class Location(BaseModel):
+class Location(BaseModelPubCreat):
     name = models.CharField(max_length=256, verbose_name="Название места")
 
     class Meta:
@@ -75,7 +75,7 @@ class Location(BaseModel):
         return self.name
 
 
-class Post(BaseModel):
+class Post(BaseModelPubCreat):
     title = models.CharField(max_length=256, verbose_name="Заголовок")
     text = models.TextField(verbose_name="Текст")
     pub_date = models.DateTimeField(
