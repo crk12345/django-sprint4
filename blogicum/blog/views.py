@@ -198,12 +198,3 @@ class PostDetailView(PostsQuerySetMixin, DetailView):
             self.get_object().comments.prefetch_related("author").all()
         )
         return context
-
-    def get_queryset(self):
-        return (
-            super()
-            .get_queryset()
-            .prefetch_related(
-                "comments",
-            )
-        )
