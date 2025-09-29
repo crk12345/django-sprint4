@@ -147,4 +147,4 @@ class Comment(models.Model):
         default_related_name = "comments"
 
     def __str__(self):
-        return self.text
+        return f"{self.post}: {self.author}, комментарий: {self.text}"
