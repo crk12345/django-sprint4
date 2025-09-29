@@ -1,8 +1,8 @@
 # Количество выводимых последних публиаций на главной странице
-NUMOFRECPUB = 5
+NUMO_FREC_PUB = 5
 
 # Количество выводимых  публиаций на странице категории
-NUMOFRECCAT = 10
+NUMO_FREC_CAT = 10
 
 # Количество символов self.title
-SELFTITLELEN = 30
+SELF_TITLE_LEN = 30
