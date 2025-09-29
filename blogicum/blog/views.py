@@ -13,9 +13,7 @@ from django.views.generic import (
 
 from .forms import CreateCommentForm, CreatePostForm
 from .models import Category, Comment, Post, User
-
-
-PAGINATED_BY = 10
+from .constants import PAGINATED_BY
 
 
 class PostsQuerySetMixin:
