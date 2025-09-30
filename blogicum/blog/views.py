@@ -14,23 +14,9 @@ from django.views.generic import (
 from .forms import CreateCommentForm, CreatePostForm
 from .models import Category, Comment, Post, User
 from .constants import PAGINATED_BY
+from .mixins import PostsQuerySetMixin, PostsEditMixin, CommentEditMixin
 
 
-class PostsQuerySetMixin:
-    def get_queryset(self):
-        return Post.post_list
-
-
-class PostsEditMixin:
-    model = Post
-    template_name = "blog/create.html"
-    queryset = Post.objects.select_related("author", "location", "category")
-
-
-class CommentEditMixin:
-    model = Comment
-    pk_url_kwarg = "comment_pk"
-    template_name = "blog/comment.html"
 
 
 class PostDeleteView(PostsEditMixin, LoginRequiredMixin, DeleteView):
