@@ -19,7 +19,7 @@ from .mixins import PostsQuerySetMixin, PostsEditMixin, CommentEditMixin
 
 
 
-class PostDeleteView(PostsEditMixin, LoginRequiredMixin, DeleteView):
+class PostDeleteView(LoginRequiredMixin, PostsEditMixin, DeleteView):
     success_url = reverse_lazy("blog:index")
 
     def dispatch(self, request, *args, **kwargs):
@@ -32,7 +32,7 @@ class PostDeleteView(PostsEditMixin, LoginRequiredMixin, DeleteView):
         return super().dispatch(request, *args, **kwargs)
 
 
-class PostUpdateView(PostsEditMixin, LoginRequiredMixin, UpdateView):
+class PostUpdateView(LoginRequiredMixin, PostsEditMixin, UpdateView):
     form_class = CreatePostForm
 
     def dispatch(self, request, *args, **kwargs):
@@ -43,7 +43,7 @@ class PostUpdateView(PostsEditMixin, LoginRequiredMixin, UpdateView):
         return super().dispatch(request, *args, **kwargs)
 
 
-class PostCreateView(PostsEditMixin, LoginRequiredMixin, CreateView):
+class PostCreateView(LoginRequiredMixin, PostsEditMixin, CreateView):
     form_class = CreatePostForm
 
     def form_valid(self, form):
@@ -72,7 +72,7 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
         return reverse("blog:post_detail", kwargs={"pk": self.kwargs["pk"]})
 
 
-class CommentDeleteView(CommentEditMixin, LoginRequiredMixin, DeleteView):
+class CommentDeleteView(LoginRequiredMixin, CommentEditMixin, DeleteView):
     def get_success_url(self):
         return reverse("blog:post_detail", kwargs={"pk": self.kwargs["pk"]})
 
@@ -86,7 +86,7 @@ class CommentDeleteView(CommentEditMixin, LoginRequiredMixin, DeleteView):
         return super().dispatch(request, *args, **kwargs)
 
 
-class CommentUpdateView(CommentEditMixin, LoginRequiredMixin, UpdateView):
+class CommentUpdateView(LoginRequiredMixin, CommentEditMixin, UpdateView):
     form_class = CreateCommentForm
 
     def dispatch(self, request, *args, **kwargs):
