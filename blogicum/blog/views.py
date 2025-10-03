@@ -14,34 +14,18 @@ from django.views.generic import (
 from .forms import CreateCommentForm, CreatePostForm
 from .models import Category, Comment, Post, User
 from .constants import PAGINATED_BY
-from .mixins import PostsQuerySetMixin, PostsEditMixin, CommentEditMixin
+from .mixins import (
+    PostsQuerySetMixin, PostsEditMixin, CommentEditMixin, AuthorPermissionMixin, 
+    PostPermissionMixin, CommentPermissionMixin
+)
 
 
-
-
-class PostDeleteView(LoginRequiredMixin, PostsEditMixin, DeleteView):
+class PostDeleteView(LoginRequiredMixin, PostPermissionMixin, PostsEditMixin, DeleteView):
     success_url = reverse_lazy("blog:index")
 
-    def dispatch(self, request, *args, **kwargs):
-        post = get_object_or_404(Post, pk=self.kwargs["pk"])
-        if (
-            self.request.user != post.author
-            and not self.request.user.is_superuser
-        ):
-            return redirect("blog:post_detail", pk=self.kwargs["pk"])
-        return super().dispatch(request, *args, **kwargs)
 
-
-class PostUpdateView(LoginRequiredMixin, PostsEditMixin, UpdateView):
+class PostUpdateView(LoginRequiredMixin, PostPermissionMixin, PostsEditMixin, UpdateView):
     form_class = CreatePostForm
-
-    def dispatch(self, request, *args, **kwargs):
-        post = get_object_or_404(Post, pk=self.kwargs["pk"])
-        if self.request.user != post.author and not (
-                self.request.user.is_superuser):
-            return redirect("blog:post_detail", pk=self.kwargs["pk"])
-        return super().dispatch(request, *args, **kwargs)
-
 
 class PostCreateView(LoginRequiredMixin, PostsEditMixin, CreateView):
     form_class = CreatePostForm
@@ -72,30 +56,12 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
         return reverse("blog:post_detail", kwargs={"pk": self.kwargs["pk"]})
 
 
-class CommentDeleteView(LoginRequiredMixin, CommentEditMixin, DeleteView):
+class CommentDeleteView(LoginRequiredMixin, CommentPermissionMixin, CommentEditMixin, DeleteView):
     def get_success_url(self):
         return reverse("blog:post_detail", kwargs={"pk": self.kwargs["pk"]})
 
-    def dispatch(self, request, *args, **kwargs):
-        comment = get_object_or_404(Comment, pk=self.kwargs["comment_pk"])
-        if (
-            self.request.user != comment.author
-            and not self.request.user.is_superuser
-        ):
-            return redirect("blog:post_detail", pk=self.kwargs["pk"])
-        return super().dispatch(request, *args, **kwargs)
-
-
-class CommentUpdateView(LoginRequiredMixin, CommentEditMixin, UpdateView):
+class CommentUpdateView(LoginRequiredMixin, CommentPermissionMixin, CommentEditMixin, UpdateView):
     form_class = CreateCommentForm
-
-    def dispatch(self, request, *args, **kwargs):
-        comment = get_object_or_404(Comment, pk=self.kwargs["comment_pk"])
-        if (self.request.user == comment.author) or (
-                self.request.user.is_superuser):
-            return super().dispatch(request, *args, **kwargs)
-        else:
-            return redirect("blog:post_detail", pk=self.kwargs["pk"])
 
     def get_success_url(self):
         return reverse("blog:post_detail", kwargs={"pk": self.kwargs["pk"]})
