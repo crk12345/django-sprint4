@@ -73,13 +73,11 @@ class AuthorProfileListView(PostsQuerySetMixin, ListView):
     paginate_by = PAGINATED_BY
 
     def get_queryset(self):
-        if self.request.user.username == self.kwargs["username"]:
+        author = get_object_or_404(User, username=self.kwargs["username"])
+    
+        if self.request.user == author:
             return (
-                self.request.user.posts.select_related(
-                    "category",
-                    "author",
-                    "location",
-                )
+                author.posts.select_related("category", "author", "location")
                 .all()
                 .annotate(comment_count=Count("comments"))
                 .order_by('-pub_date')
@@ -88,7 +86,7 @@ class AuthorProfileListView(PostsQuerySetMixin, ListView):
         return (
             super()
             .get_queryset()
-            .filter(author__username=self.kwargs["username"])
+            .filter(author=author)
             .annotate(comment_count=Count("comments"))
             .order_by('-pub_date')
         )
@@ -104,7 +102,6 @@ class AuthorProfileListView(PostsQuerySetMixin, ListView):
 class BlogIndexListView(PostsQuerySetMixin, ListView):
     model = Post
     template_name = "blog/index.html"
-    context_object_name = "post_list"
     paginate_by = PAGINATED_BY
 
     def get_queryset(self):
