@@ -15,7 +15,7 @@ from .forms import CreateCommentForm, CreatePostForm
 from .models import Category, Comment, Post, User
 from .constants import PAGINATED_BY
 from .mixins import (
-    PostsQuerySetMixin, PostsEditMixin, CommentEditMixin, AuthorPermissionMixin, 
+    PostsQuerySetMixin, PostsEditMixin, CommentEditMixin, AuthorPermissionMixin,
     PostPermissionMixin, CommentPermissionMixin
 )
 
@@ -26,6 +26,7 @@ class PostDeleteView(LoginRequiredMixin, PostPermissionMixin, PostsEditMixin, De
 
 class PostUpdateView(LoginRequiredMixin, PostPermissionMixin, PostsEditMixin, UpdateView):
     form_class = CreatePostForm
+
 
 class PostCreateView(LoginRequiredMixin, PostsEditMixin, CreateView):
     form_class = CreatePostForm
@@ -60,6 +61,7 @@ class CommentDeleteView(LoginRequiredMixin, CommentPermissionMixin, CommentEditM
     def get_success_url(self):
         return reverse("blog:post_detail", kwargs={"pk": self.kwargs["pk"]})
 
+
 class CommentUpdateView(LoginRequiredMixin, CommentPermissionMixin, CommentEditMixin, UpdateView):
     form_class = CreateCommentForm
 
@@ -74,7 +76,7 @@ class AuthorProfileListView(PostsQuerySetMixin, ListView):
 
     def get_queryset(self):
         author = get_object_or_404(User, username=self.kwargs["username"])
-    
+
         if self.request.user == author:
             return (
                 author.posts.select_related("category", "author", "location")
@@ -107,11 +109,13 @@ class BlogIndexListView(PostsQuerySetMixin, ListView):
     def get_queryset(self):
         return super().get_queryset().annotate(comment_count=Count("comments"))
 
+    #def get_queryset(self):
+    #    return super().get_queryset()
+
 
 class BlogCategoryListView(PostsQuerySetMixin, ListView):
     model = Post
     template_name = "blog/category.html"
-    context_object_name = "post_list"
     paginate_by = PAGINATED_BY
 
     def get_context_data(self, **kwargs):
@@ -147,3 +151,11 @@ class PostDetailView(PostsQuerySetMixin, DetailView):
             self.get_object().comments.prefetch_related("author").all()
         )
         return context
+    def get_queryset(self):
+        return (
+            super()
+            .get_queryset()
+            .prefetch_related(
+                "comments",
+            )
+        )
