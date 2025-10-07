@@ -140,9 +140,12 @@ class PostDetailView(PostsQuerySetMixin, DetailView):
 
     def get_object(self, queryset=None):
         obj = get_object_or_404(Post, pk=self.kwargs['pk'])
-        if not obj.is_published and obj.author != self.request.user:
-            raise Http404("Post not found")
-        return obj
+        if obj.author == self.request.user: 
+            return obj
+        elif obj.is_published and obj.category.is_published:
+            return obj
+        raise Http404("Post not found")
+        
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
