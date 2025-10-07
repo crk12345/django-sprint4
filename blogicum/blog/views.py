@@ -1,5 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import Http404
+from django.utils import timezone
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
 from django.db.models import Count
@@ -140,9 +141,10 @@ class PostDetailView(PostsQuerySetMixin, DetailView):
 
     def get_object(self, queryset=None):
         obj = get_object_or_404(Post, pk=self.kwargs['pk'])
+        current_time = timezone.now()
         if obj.author == self.request.user: 
             return obj
-        elif obj.is_published and obj.category.is_published:
+        elif obj.is_published and obj.category.is_published and obj.pub_date <= current_time:
             return obj
         raise Http404("Post not found")
         
