@@ -142,17 +142,7 @@ class PostDetailView(PostsQuerySetMixin, DetailView):
     model = Post
     template_name = "blog/detail.html"
     pk_url_kwarg = "pk"
-
-    def get_object(self, queryset=None):
-        obj = get_object_or_404(Post, pk=self.kwargs['pk'])
-        current_time = timezone.now()
-        if obj.author == self.request.user:
-            return obj
-        elif (obj.is_published and obj.category.is_published
-              and obj.pub_date <= current_time):
-            return obj
-        raise Http404("Post not found")
-
+         
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["form"] = CreateCommentForm()
@@ -160,12 +150,3 @@ class PostDetailView(PostsQuerySetMixin, DetailView):
             self.get_object().comments.prefetch_related("author").all()
         )
         return context
-
-    def get_queryset(self):
-        return (
-            super()
-            .get_queryset()
-            .prefetch_related(
-                "comments",
-            )
-        )
