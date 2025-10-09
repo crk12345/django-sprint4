@@ -5,7 +5,7 @@ from django.http import Http404
 
 from django.db.models import Count
 
-from .models import Category, Comment, Post, User
+from .models import Comment, Post
 
 
 class PostsQuerySetMixin:
@@ -15,8 +15,8 @@ class PostsQuerySetMixin:
         current_time = timezone.now()
         if obj.author == self.request.user:
             return obj
-        elif (obj.is_published and obj.category.is_published and 
-              obj.pub_date <= current_time):
+        elif (obj.is_published and obj.category.is_published
+              and obj.pub_date <= current_time):
             return obj
         raise Http404("Post not found")
 
