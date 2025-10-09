@@ -21,13 +21,13 @@ from .mixins import (
 )
 
 
-class PostDeleteView(LoginRequiredMixin, PostPermissionMixin, 
-                    PostsEditMixin, DeleteView):
+class PostDeleteView(LoginRequiredMixin, PostPermissionMixin,
+                     PostsEditMixin, DeleteView):
     success_url = reverse_lazy("blog:index")
 
 
-class PostUpdateView(LoginRequiredMixin, PostPermissionMixin, 
-                    PostsEditMixin, UpdateView):
+class PostUpdateView(LoginRequiredMixin, PostPermissionMixin,
+                     PostsEditMixin, UpdateView):
     form_class = CreatePostForm
 
 
@@ -61,13 +61,13 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
 
 
 class CommentDeleteView(LoginRequiredMixin, CommentPermissionMixin,
-                       CommentEditMixin, DeleteView):
+                        CommentEditMixin, DeleteView):
     def get_success_url(self):
         return reverse("blog:post_detail", kwargs={"pk": self.kwargs["pk"]})
 
 
-class CommentUpdateView(LoginRequiredMixin, CommentPermissionMixin, 
-                       CommentEditMixin, UpdateView):
+class CommentUpdateView(LoginRequiredMixin, CommentPermissionMixin,
+                        CommentEditMixin, UpdateView):
     form_class = CreateCommentForm
 
     def get_success_url(self):
@@ -148,8 +148,8 @@ class PostDetailView(PostsQuerySetMixin, DetailView):
         current_time = timezone.now()
         if obj.author == self.request.user:
             return obj
-        elif (obj.is_published and obj.category.is_published and 
-              obj.pub_date <= current_time):
+        elif (obj.is_published and obj.category.is_published
+              and obj.pub_date <= current_time):
             return obj
         raise Http404("Post not found")
 

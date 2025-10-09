@@ -86,7 +86,7 @@ class Post(BaseModelPubCreat):
         Category,
         verbose_name="Категория",
         on_delete=models.SET_NULL,
-        null=True,
+        blank=True, 
     )
     image = models.ImageField("Изображение", blank=True, upload_to="img/")
     objects = models.Manager()
