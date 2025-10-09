@@ -142,7 +142,7 @@ class PostDetailView(PostsQuerySetMixin, DetailView):
     model = Post
     template_name = "blog/detail.html"
     pk_url_kwarg = "pk"
-         
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["form"] = CreateCommentForm()
