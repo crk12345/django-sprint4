@@ -1,7 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import Http404
-from django.shortcuts import get_object_or_404, redirect
-from django.utils import timezone
+from django.shortcuts import get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.db.models import Count
 from django.views.generic import (
@@ -16,7 +14,7 @@ from .forms import CreateCommentForm, CreatePostForm
 from .models import Category, Comment, Post, User
 from .constants import PAGINATED_BY
 from .mixins import (
-    PostsQuerySetMixin, PostsEditMixin, CommentEditMixin, AuthorPermissionMixin,
+    PostsQuerySetMixin, PostsEditMixin, CommentEditMixin,
     PostPermissionMixin, CommentPermissionMixin
 )
 
