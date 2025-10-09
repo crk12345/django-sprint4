@@ -1,13 +1,10 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.urls import reverse
-from django.utils import timezone
 
-from .managers import PostManager 
+from .managers import PostManager
 
 User = get_user_model()
-
-
 
 
 class BaseModelPubCreat(models.Model):
@@ -80,13 +77,13 @@ class Post(BaseModelPubCreat):
         verbose_name="Местоположение",
         on_delete=models.SET_NULL,
         null=True,
-        blank=True, 
+        blank=True,
     )
     category = models.ForeignKey(
         Category,
         verbose_name="Категория",
         on_delete=models.SET_NULL,
-        blank=True, 
+        blank=True,
     )
     image = models.ImageField("Изображение", blank=True, upload_to="img/")
     objects = models.Manager()
